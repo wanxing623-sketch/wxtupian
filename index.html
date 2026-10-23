@@ -146,6 +146,9 @@ body.v-collage{font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Hir
 #view-collage .btn.danger{color:#c4352b}
 #view-collage .linkbtn{border:0;background:none;color:var(--muted);font-size:12px;cursor:pointer;padding:4px 5px}
 #view-collage .linkbtn:hover{color:var(--text)}
+#view-collage .dangerbtn{display:inline-flex;align-items:center;gap:3px;margin-left:4px;padding:4px 9px;border:1px solid #d25850;border-radius:6px;background:#fff;color:#c4352b;font-size:12px;font-weight:600;line-height:1.3;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+#view-collage .dangerbtn:hover{background:#fdf0ef;border-color:#c4352b;color:#a92a21}
+#view-collage .dangerbtn:focus-visible{outline:2px solid #eeb3ae;outline-offset:2px}
 #view-collage .stage{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:#f4f4f2}
 #view-collage .stagebar{display:flex;align-items:center;justify-content:space-between;gap:8px;height:44px;padding:0 10px 0 14px;background:#fff;border-bottom:1px solid var(--line);flex:none}
 #view-collage .meta{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -203,7 +206,6 @@ body.v-collage{font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Hir
 #view-collage .thumb.dragging{opacity:.25}
 #view-collage .thumb.ghost{position:fixed;z-index:100;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.22);transform:scale(1.06);margin:0}
 #view-collage .hint{font-size:12px;color:var(--muted);margin:0 0 10px}
-#view-collage .foot{font-size:11px;color:#b0b0ab;padding:14px 16px 20px;line-height:1.6}
 #view-collage .mbar{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:#fff;border-top:1px solid var(--line);z-index:30}
 #view-collage .mbar .btn{flex:1;height:46px;font-size:15px}
 #view-collage .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(6px);background:rgba(25,25,25,.9);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:200;max-width:90vw;text-align:center}
@@ -213,17 +215,25 @@ body.v-collage{font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC","Hir
 #view-collage .modal[hidden]{display:none}
 #view-collage .modal img{max-width:100%;max-height:75vh;object-fit:contain;background:#fff}
 #view-collage .modal p{color:#eee;margin:0;font-size:14px}
+#view-collage .confirm{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(20,20,20,.55)}
+#view-collage .confirm[hidden]{display:none}
+#view-collage .confirm-card{width:100%;max-width:360px;padding:22px 22px 18px;border-radius:14px;background:#fff;box-shadow:0 18px 50px rgba(0,0,0,.28);text-align:left}
+#view-collage .confirm-card h3{margin:0 0 8px;font-size:16px;font-weight:600;color:var(--text)}
+#view-collage .confirm-card p{margin:0;color:#5b5b55;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+#view-collage .confirm-actions{display:flex;gap:10px;margin-top:20px}
+#view-collage .confirm-actions .btn{flex:1;height:40px}
+#view-collage .btn.danger-solid{background:#c4352b;border-color:#c4352b;color:#fff}
+#view-collage .btn.danger-solid:hover{background:#a92a21;border-color:#a92a21}
 @media (max-width:359px){
 #view-collage .selbar .label{display:none}
 #view-collage .selbar .btn.sm{padding:0 6px}
 }
 @media (min-width:600px){
-#view-collage .panel{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"layout tune" "export tune" "order order" "foot foot"}
+#view-collage .panel{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"layout tune" "export tune" "order order"}
 #view-collage .g-layout{grid-area:layout;border-right:1px solid var(--line)}
 #view-collage .g-export{grid-area:export;border-right:1px solid var(--line)}
 #view-collage .g-tune{grid-area:tune}
 #view-collage .g-order{grid-area:order}
-#view-collage .foot{grid-area:foot}
 #view-collage .group{padding:16px 20px}
 #view-collage .thumbs{grid-template-columns:repeat(auto-fill,minmax(76px,1fr))}
 }
@@ -266,6 +276,7 @@ html.v-collage, #view-collage{--hh:46px}
 #view-collage input[type=range]{height:28px}
 #view-collage .sw{width:32px;height:32px}
 #view-collage .linkbtn{padding:6px 6px;font-size:13px}
+#view-collage .dangerbtn{padding:7px 10px;font-size:13px}
 }
 
 #view-collage .top{padding:0 max(14px,env(safe-area-inset-right)) 0 max(10px,env(safe-area-inset-left))}
@@ -712,7 +723,7 @@ body.v-shrink{margin: 0;
         <div class="logo-mark" aria-hidden="true">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4" width="17" height="16" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="9" r="1.5" fill="currentColor"/><path d="m5.5 17 4.1-4.2a1.4 1.4 0 0 1 2 0l1.5 1.5 2.2-2.3a1.4 1.4 0 0 1 2 0l2.3 2.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="logo-copy"><strong>轻图</strong><small>LOCAL IMAGE TOOLKIT</small></div>
+        <div class="logo-copy"><strong>轻图</strong></div>
       </div>
       <div class="chip"><i aria-hidden="true"></i>仅在本机处理</div>
     </header>
@@ -768,7 +779,6 @@ body.v-shrink{margin: 0;
     </nav>
 
     <footer class="home-foot">
-      <span class="tip">提示：工具页左上角「返回」、浏览器返回键或手机返回手势都能回到这里；已添加的图片会保留，再次进入可继续编辑（刷新页面会清空）。</span>
       <span>单文件 · 无需联网 · 不上传</span>
     </footer>
   </div>
@@ -797,7 +807,7 @@ body.v-shrink{margin: 0;
     <div class="wrap" id="wrap">
       <div class="empty" id="empty">
         <p>点击或拖入图片</p>
-        <small>支持多选、拖拽、Ctrl+V 粘贴<br>自动无缝拼接到白底上</small>
+        <small>支持多选、拖拽与粘贴</small>
         <span class="btn primary">选择图片</span>
       </div>
       <div class="box" id="box" hidden>
@@ -878,13 +888,12 @@ body.v-shrink{margin: 0;
           <button class="linkbtn" id="shuffleBtn">打乱</button>
           <button class="linkbtn" id="sortBtn">按文件名</button>
           <button class="linkbtn" id="reverseBtn">倒序</button>
-          <button class="linkbtn" id="clearBtn">清空</button>
+          <button class="dangerbtn" id="clearBtn" type="button">⚠ 清空全部</button>
         </div>
       </div>
-      <p class="hint" id="thumbHint">拖动缩略图调整顺序（手机上长按再拖）。点选后可前移、旋转、隐藏或删除；电脑上可在预览图里直接拖动交换位置。预览可用 +/− 缩放，触屏双指、电脑 Ctrl+滚轮也可以。</p>
+      <p class="hint" id="thumbHint">拖动缩略图可调整顺序</p>
       <div class="thumbs" id="thumbs"></div>
     </div>
-    <div class="foot">自适应布局采用 linear-partition 行划分（思路参考 GitHub 上 crispymtn/linear-partition 与 flickr/justified-layout），无需联网，单文件即可使用。</div>
   </aside>
 </main>
 
@@ -897,6 +906,17 @@ body.v-shrink{margin: 0;
   <img id="modalImg" alt="拼图结果">
   <p>长按图片保存到相册</p>
   <button class="btn" id="modalClose">关闭</button>
+</div>
+
+<div class="confirm" id="confirmModal" hidden>
+  <div class="confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMsg">
+    <h3 id="confirmTitle">确认删除</h3>
+    <p id="confirmMsg"></p>
+    <div class="confirm-actions">
+      <button class="btn" type="button" id="confirmCancel">取消</button>
+      <button class="btn danger-solid" type="button" id="confirmOk">确定删除</button>
+    </div>
+  </div>
 </div>
 
 <input type="file" id="file" accept="image/*" multiple hidden>
@@ -914,7 +934,7 @@ body.v-shrink{margin: 0;
             <path d="m5.5 17 4.1-4.2a1.4 1.4 0 0 1 2 0l1.5 1.5 2.2-2.3a1.4 1.4 0 0 1 2 0l2.3 2.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <div class="brand-copy"><strong>轻图</strong><small>LOCAL IMAGE TOOL</small></div>
+        <div class="brand-copy"><strong>轻图</strong></div>
       </div>
       </div><div class="local-chip"><i aria-hidden="true"></i>仅在本机处理</div>
     </header></div>
@@ -961,7 +981,7 @@ body.v-shrink{margin: 0;
                 <input id="targetInput" type="number" min="1" step="any" value="500" inputmode="decimal" aria-describedby="targetHelp targetError">
                 <span class="unit">KB</span>
               </span>
-              <small id="targetHelp" class="field-help">每张图片单独处理；1 KB 按 1024 字节计算</small>
+              <small id="targetHelp" class="field-help">1 KB = 1024 字节</small>
               <small id="targetError" class="field-help field-error" hidden>请输入不小于 1 的有效数值</small>
             </label>
             <label class="field" for="formatSelect">
@@ -972,7 +992,7 @@ body.v-shrink{margin: 0;
                 <option value="jpeg">JPEG（透明处填白）</option>
                 <option value="png">PNG（像素无损，体积不保证）</option>
               </select>
-              <small id="formatHelp" class="field-help">自动模式：JPG 保持 JPEG；其他格式转为 WebP。</small>
+              <small id="formatHelp" class="field-help">自动：JPG 保持，其余转 WebP</small>
             </label>
           </div>
 
@@ -1598,6 +1618,53 @@ document.addEventListener('touchend', e => { if (td && td.type === 'touch') { la
 document.addEventListener('touchcancel', () => { if (td && td.type === 'touch') tEnd(true); });
 thumbsEl.addEventListener('contextmenu', e => e.preventDefault());
 
+/* ---------------- confirm dialog ---------------- */
+const confirmEl = $('#confirmModal');
+const confirmTitleEl = $('#confirmTitle');
+const confirmMsgEl = $('#confirmMsg');
+const confirmOkEl = $('#confirmOk');
+const confirmCancelEl = $('#confirmCancel');
+let confirmResolve = null, confirmReturnFocus = null, confirmPrevOverflow = '';
+
+function closeConfirm(result) {
+  if (confirmEl.hidden) return;
+  confirmEl.hidden = true;
+  document.body.style.overflow = confirmPrevOverflow;
+  const resolve = confirmResolve; confirmResolve = null;
+  const back = confirmReturnFocus; confirmReturnFocus = null;
+  if (back && typeof back.focus === 'function' && document.contains(back)) back.focus();
+  if (resolve) resolve(result);
+}
+function askConfirm({title, message, okText = '确定删除'}) {
+  if (confirmResolve) closeConfirm(false);
+  return new Promise(resolve => {
+    confirmResolve = resolve;
+    confirmReturnFocus = document.activeElement;
+    confirmTitleEl.textContent = title;
+    confirmMsgEl.textContent = message;
+    confirmOkEl.textContent = okText;
+    confirmPrevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    confirmEl.hidden = false;
+    confirmCancelEl.focus();
+  });
+}
+confirmCancelEl.addEventListener('click', () => closeConfirm(false));
+confirmOkEl.addEventListener('click', () => closeConfirm(true));
+confirmEl.addEventListener('click', e => { if (e.target === confirmEl) closeConfirm(false); });
+document.addEventListener('keydown', e => {
+  if (confirmEl.hidden) return;
+  if (e.key === 'Escape') {
+    e.preventDefault(); e.stopPropagation(); closeConfirm(false);
+  } else if (e.key === 'Tab') {
+    const first = confirmCancelEl, last = confirmOkEl;
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  } else {
+    e.stopPropagation();
+  }
+}, true);
+
 /* ---------------- selection actions ---------------- */
 function act(a) {
   const i = idx(selId); if (i < 0) return;
@@ -1611,19 +1678,25 @@ function act(a) {
     if (!p.hidden && wasAll) state.count = visibleAll().length;
   }
   else if (a === 'remove') {
-    if (!confirm(`确定要删除「${p.name}」吗？`)) return;
-    const wasAll = state.count >= visibleAll().length;
-    photos.splice(i, 1); URL.revokeObjectURL(p.url);
-    selId = photos[Math.min(i, photos.length - 1)]?.id ?? null;
-    rebuildThumbs();
-    if (wasAll) state.count = visibleAll().length;
+    askConfirm({title: '删除这张图片？', message: `「${p.name}」将从拼图中移除，此操作无法撤销。`})
+      .then(ok => {
+        if (!ok) return;
+        const j = photos.indexOf(p); if (j < 0) return;
+        const wasAll = state.count >= visibleAll().length;
+        photos.splice(j, 1); URL.revokeObjectURL(p.url);
+        selId = photos[Math.min(j, photos.length - 1)]?.id ?? null;
+        rebuildThumbs();
+        if (wasAll) state.count = visibleAll().length;
+        changed();
+      });
+    return;
   }
   else if (a === 'close') { return select(null); }
   changed();
 }
 $('#selbar').addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b) act(b.dataset.act); });
 document.addEventListener('keydown', e => {
-  if (!active() || !selId || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if (!confirmEl.hidden || !active() || !selId || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
   const map = {ArrowLeft: 'prev', ArrowUp: 'prev', ArrowRight: 'next', ArrowDown: 'next', Delete: 'remove', Backspace: 'remove', Escape: 'close', r: 'rotate', R: 'rotate', h: 'hide', H: 'hide'};
   if (map[e.key]) { e.preventDefault(); act(map[e.key]); }
 });
@@ -1686,8 +1759,15 @@ markBg();
 $('#shuffleBtn').onclick = () => { for (let i = photos.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [photos[i], photos[j]] = [photos[j], photos[i]]; } changed(); };
 $('#sortBtn').onclick = () => { photos.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true})); changed(); };
 $('#reverseBtn').onclick = () => { photos.reverse(); changed(); };
-$('#clearBtn').onclick = () => {
-  if (!photos.length || !confirm('确定要清空所有已添加的图片吗？此操作无法撤销。')) return;
+$('#clearBtn').onclick = async () => {
+  if (!photos.length) return;
+  const count = photos.length;
+  const ok = await askConfirm({
+    title: '清空全部图片？',
+    message: `将删除已添加的 ${count} 张图片，此操作无法撤销。`,
+    okText: '确定清空'
+  });
+  if (!ok) return;
   photos.forEach(p => URL.revokeObjectURL(p.url)); photos = []; selId = null; state.count = 0;
   rebuildThumbs(); syncCount(); updateSel(); schedule();
 };
@@ -1839,7 +1919,7 @@ syncCount(); rebuildThumbs(); schedule();
 
       function updateFormatHelp() {
         const help = {
-          auto: '自动模式：JPG 保持 JPEG；其他格式转为 WebP。',
+          auto: '自动：JPG 保持，其余转 WebP',
           webp: 'WebP 体积较小并支持透明背景，浏览器需要支持 WebP 导出。',
           jpeg: 'JPEG 适合照片；如原图有透明区域，会以白色填充。',
           png: 'PNG 按像素无损编码，但通常不如 JPEG / WebP 小。'
