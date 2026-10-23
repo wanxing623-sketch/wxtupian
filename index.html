@@ -813,7 +813,7 @@ body.v-shrink{margin: 0;
       <button class="btn sm" data-act="rotate">旋转</button>
       <button class="btn sm" data-act="hide" id="hideBtn">隐藏</button>
       <button class="btn sm danger" data-act="remove">删除</button>
-      <button class="btn sm" data-act="close" aria-label="取消选择">✕</button>
+      <button class="btn sm" data-act="close" aria-label="取消选择" title="取消选择">取消选择</button>
     </div>
   </section>
 
@@ -1611,6 +1611,7 @@ function act(a) {
     if (!p.hidden && wasAll) state.count = visibleAll().length;
   }
   else if (a === 'remove') {
+    if (!confirm(`确定要删除「${p.name}」吗？`)) return;
     const wasAll = state.count >= visibleAll().length;
     photos.splice(i, 1); URL.revokeObjectURL(p.url);
     selId = photos[Math.min(i, photos.length - 1)]?.id ?? null;
@@ -1686,7 +1687,7 @@ $('#shuffleBtn').onclick = () => { for (let i = photos.length - 1; i > 0; i--) {
 $('#sortBtn').onclick = () => { photos.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true})); changed(); };
 $('#reverseBtn').onclick = () => { photos.reverse(); changed(); };
 $('#clearBtn').onclick = () => {
-  if (!photos.length || !confirm('清空所有图片？')) return;
+  if (!photos.length || !confirm('确定要清空所有已添加的图片吗？此操作无法撤销。')) return;
   photos.forEach(p => URL.revokeObjectURL(p.url)); photos = []; selId = null; state.count = 0;
   rebuildThumbs(); syncCount(); updateSel(); schedule();
 };
